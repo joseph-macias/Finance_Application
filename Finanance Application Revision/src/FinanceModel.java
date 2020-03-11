@@ -76,7 +76,7 @@ public class FinanceModel {
 					// GET THE CATEGORY
 					String category = getCategoryForExpense(output);
 					// GET THE MONTH
-					getMonth(output);
+					int date = getMonth(output);
 					// calculateMargins(month);
 					// GET THE INDEX THE EXPENSE BELONGS TO
 					getIndexForExpense(category, output);
@@ -142,6 +142,12 @@ public class FinanceModel {
 			input += "\t" + getCurrentDate();
 			// ADD INPUT TO EXPENSES TEXT FILE
 			writer.println(input);
+
+			// GET MONTH AND ADD TO MONTHLY SPENDING TOTAL
+			int date = getMonth(input);
+			// UPDATE VIEW OF MONTH MARGINS
+			updateMonthlyMargins(date);
+
 			// ADD INPUT TO THE SCROLL PANE
 			displayExpenses(input);
 
@@ -346,12 +352,12 @@ public class FinanceModel {
 	}
 
 	// GET THE MONTH AS A STRING NAME
-	public void getMonth(String str) {
+	public int getMonth(String str) {
 		// SPLIT EXPENSES BASED ON TABS
 		String[] split1 = splitString(str);
 		// SPLIT DATE BASED ON /
 		String[] dateSplit = split1[split1.length - 1].split("/");
-		// GET THE MONTH AS AN INTGER
+		// GET THE MONTH AS AN INTEGER
 		int month = Integer.parseInt(dateSplit[0]);
 		// GET THE EXEPNSE VALUE
 		double expense = Double.parseDouble(split1[0]);
@@ -361,6 +367,7 @@ public class FinanceModel {
 
 		// GET THE CURRENT MONTH
 		// int currentMonth = splitCurrentDate();
+		return month;
 
 	}
 
@@ -391,8 +398,20 @@ public class FinanceModel {
 			String name = months.getMonthName() + "\n";
 
 			// SET THE TEXT OF TEXT AREA
-			monthsList.get(i).setText(name + "$" + monthlySpending[i]);
+			monthsList.get(i).setText(name + "$" + df.format(monthlySpending[i]));
 		}
+
+	}
+
+	public void updateMonthlyMargins(int date) {
+		// GET ARRAYLIST OF JLABELS
+		ArrayList<JTextArea> monthsList = view.getMonthTexts();
+		// GET THE MONTH NAME
+		months = new Months(date);
+		String name = months.getMonthName() + "\n";
+
+		// SET THE TEXT AREA
+		monthsList.get(date - 1).setText(name + "$" + df.format(monthlySpending[date - 1]));
 
 	}
 
