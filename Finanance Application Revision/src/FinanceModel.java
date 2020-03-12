@@ -77,6 +77,8 @@ public class FinanceModel {
 					String category = getCategoryForExpense(output);
 					// GET THE MONTH
 					int date = getMonth(output);
+					addMonthExpense(output, date);
+
 					// calculateMargins(month);
 					// GET THE INDEX THE EXPENSE BELONGS TO
 					getIndexForExpense(category, output);
@@ -145,6 +147,7 @@ public class FinanceModel {
 
 			// GET MONTH AND ADD TO MONTHLY SPENDING TOTAL
 			int date = getMonth(input);
+			addMonthExpense(input, date);
 			// UPDATE VIEW OF MONTH MARGINS
 			updateMonthlyMargins(date);
 
@@ -278,12 +281,19 @@ public class FinanceModel {
 	}
 
 	public void getIndexForExpense(String category, String output) {
+		// GET INDEX
 		int index = goalsIndex(category);
+		// GET MONTH OF EXPENSE
+		int month = getMonth(output);
+		// GET MONTH FOR CURRENT DATE
+		int date = splitCurrentDate();
 		// GET THE AMOUNT SPENT FOR THE EXPENSE
 		double expense = getExpense(output);
 
 		// SUBTRACT THE EXPENSE FROM THE GOAL FOR THE CORRESPONDING INDEX
-		goalsList[index] -= expense;
+		if (date == month) {
+			goalsList[index] -= expense;
+		}
 
 		// DISPLAY NEW MARGINS
 		displayGoalMargins(index);
@@ -291,6 +301,7 @@ public class FinanceModel {
 	}
 
 	public int getIndex(String category, String output, boolean change) {
+		// GET INDEX
 		int index = goalsIndex(category);
 		if (change == true) {
 			// ADD GOAL AMOUNT TO THE CORRECT INDEX
@@ -351,7 +362,6 @@ public class FinanceModel {
 
 	}
 
-	// GET THE MONTH AS A STRING NAME
 	public int getMonth(String str) {
 		// SPLIT EXPENSES BASED ON TABS
 		String[] split1 = splitString(str);
@@ -359,16 +369,17 @@ public class FinanceModel {
 		String[] dateSplit = split1[split1.length - 1].split("/");
 		// GET THE MONTH AS AN INTEGER
 		int month = Integer.parseInt(dateSplit[0]);
+		return month;
+	}
+
+	// GET THE MONTH AS A STRING NAME
+	public void addMonthExpense(String str, int month) {
+		// SPLIT EXPENSES BASED ON TABS
+		String[] split1 = splitString(str);
 		// GET THE EXEPNSE VALUE
 		double expense = Double.parseDouble(split1[0]);
 		// ADD EXPENSE TO PROPER MONTHLY SPENDING INDEX
 		monthlySpending[month - 1] += expense;
-		// SET THE TEXT FOR THE CORRECT MONTH
-
-		// GET THE CURRENT MONTH
-		// int currentMonth = splitCurrentDate();
-		return month;
-
 	}
 
 	public int splitCurrentDate() {
