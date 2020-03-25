@@ -68,7 +68,6 @@ public class View {
 	private JLabel utilitiesResult;
 	private JLabel otherResult;
 	private ArrayList<JLabel> labels;
-
 	// MONTHLY SPENDING
 	private JTextArea jan;
 	private JTextArea feb;
@@ -101,84 +100,14 @@ public class View {
 		// SET THE FONTS
 		setFonts();
 
-		// CREATE LABEL AND TEXTFIELD TO INSERT EXPENSE
-		money = new JFormattedTextField(format);
-		money.setValue(new Double(0));
-		money.setFont(currencyFont2);
-		money.setHorizontalAlignment(money.CENTER);
-		dollarSign = new JLabel("Amount:");
-		dollarSign1 = new JLabel("Amount:");
-		dollarSign.setFont(lblFont);
-		dollarSign.setHorizontalAlignment(categoryLbl.CENTER);
-		dollarSign1.setFont(lblFont);
+		// CREATE EXPENSE INPUT AREA
+		createExpenses();
 
-		// CREATE EXPENSES LABEL AND BLANK LABEL
-		expensesLbl = new JLabel("Enter Expenses:");
-		expensesLbl.setFont(amountFont);
-		blankLbl = new JLabel("");
+		// CREATE GOALS INPUT AREA
+		createGoals();
 
-		// CREATE GOALS TEXT
-		goalsLbl = new JLabel("Set Goals:     ");
-		goalsLbl.setFont(goalsFont);
-
-		// CREATE LABEL AND DROP DOWN FOR CATEGORY
-		categories = createCategories();
-		categories.setFont(lblFont);
-		categories1 = createCategories();
-		categories1.setFont(lblFont);
-		categoryLbl = new JLabel("Category:");
-		categoryLbl.setFont(lblFont);
-		categoryLbl.setHorizontalAlignment(categoryLbl.CENTER);
-
-		// CREATE LABEL AND TEXTFIELD FOR DESCRIPTION
-		descriptionTxt = new JTextField();
-		descriptionTxt.setEditable(true);
-		descriptionTxt.setFont(lblFont);
-		descriptionLbl = new JLabel("Description:");
-		descriptionLbl.setFont(lblFont);
-		descriptionLbl.setHorizontalAlignment(categoryLbl.CENTER);
-
-		// CREATE GOAL AMOUNT
-		goalAmount = new JFormattedTextField(format);
-		goalAmount.setValue(new Double(0));
-		goalAmount.setColumns(10);
-		goalAmount.setFont(currencyFont);
-
-		// CREATE SUBMIT BUTTONS
-		goalsBtn = new JButton("SUBMIT");
-		goalsBtn.setFont(lblFont);
-		expensesBtn = new JButton("SUBMIT");
-		expensesBtn.setFont(lblFont);
-
-		// CREATE SCROLL PANE AND TEXT AREA TO DISPLAY CURRENT GOALS;
-		goalsScrollText = new JTextArea(25, 25);
-		goalsScrollText.setEditable(false);
-		goalsScrollText.setText("Goals:\n");
-		goalsScrollText.setFont(lblFont);
-		goalsScrollPane = new JScrollPane(goalsScrollText);
-		goalsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		goalsScrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
-		container.add(goalsScrollPane, BorderLayout.EAST);
-
-		// CREATE GOALS PANEL
-		panel1 = new JPanel();
-		panel1.setBorder(new LineBorder(Color.WHITE, 5));
-		panel1.setLayout(new FlowLayout());
-		panel1.setBackground(Color.LIGHT_GRAY);
-		panel1.add(goalsLbl);
-		panel1.add(dollarSign1);
-		panel1.add(goalAmount);
-		panel1.add(categories1);
-		panel1.add(goalsBtn);
-
-		// ADD PANEL TO THE CONTAINER
-		container.add(panel1, BorderLayout.NORTH);
-
-		// CREATE EXPENSES PANEL
-		panel2 = new JPanel();
-		panel2.setBorder(new LineBorder(Color.WHITE, 5));
-		panel2.setLayout(new GridLayout(2, 1));
-		panel2.setBackground(Color.LIGHT_GRAY);
+		// CREATE SCROLL PANE AND TEXT AREA TO DISPLAY CURRENT GOALS
+		createGoalScrollable();
 
 		// CREATE GRIDLAYOUT TO DISPLAY GOAL MARGINS
 		createGoalMarginsGrid();
@@ -186,6 +115,28 @@ public class View {
 		// CREATE GRIDLAYOUT TO DISPLAY MONTHLY EXPENSES
 		createMonthlySpendingGrid();
 
+		// CREATE THE WEST PANEL
+		createWestPanel();
+
+		// CREATE EXPENSES SCROLLABLE
+		createExpensesScrollable();
+	}
+
+	private void createExpensesScrollable() {
+		// CREATE SCROLL PANE AND TEXT AREA TO DISPLAY EXPENSES
+		scrollPaneText = new JTextArea();
+		scrollPaneText.setEditable(false);
+		scrollPaneText.setText("Expenses:\n");
+		scrollPaneText.setFont(lblFont);
+		scrollPane = new JScrollPane(scrollPaneText);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
+
+		// ADD TO THE CONTAINER
+		container.add(scrollPane, BorderLayout.CENTER);
+	}
+
+	private void createWestPanel() {
 		// CREATE GRIDLAYOUT
 		panel3 = new JPanel();
 		panel3.setLayout(new GridLayout(5, 1));
@@ -210,18 +161,94 @@ public class View {
 
 		// ADD PANEL TO THE CONTAINER
 		container.add(panel2, BorderLayout.WEST);
+	}
 
-		// CREATE SCROLL PANE AND TEXT AREA TO DISPLAY EXPENSES
-		scrollPaneText = new JTextArea();
-		scrollPaneText.setEditable(false);
-		scrollPaneText.setText("Expenses:\n");
-		scrollPaneText.setFont(lblFont);
-		scrollPane = new JScrollPane(scrollPaneText);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
+	private void createGoalScrollable() {
+		goalsScrollText = new JTextArea(25, 25);
+		goalsScrollText.setEditable(false);
+		goalsScrollText.setText("Goals:\n");
+		goalsScrollText.setFont(lblFont);
+		goalsScrollPane = new JScrollPane(goalsScrollText);
+		goalsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		goalsScrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
+		container.add(goalsScrollPane, BorderLayout.EAST);
+	}
 
-		// ADD TO THE CONTAINER
-		container.add(scrollPane, BorderLayout.CENTER);
+	private void createGoals() {
+		// CREATE GOALS TEXT
+		goalsLbl = new JLabel("Set Goals:     ");
+		goalsLbl.setFont(goalsFont);
+
+		// CREATE LABEL AND DROP DOWN FOR CATEGORY
+		categories1 = createCategories();
+		categories1.setFont(lblFont);
+
+		// CREATE GOAL AMOUNT
+		goalAmount = new JFormattedTextField(format);
+		goalAmount.setValue(new Double(0));
+		goalAmount.setColumns(10);
+		goalAmount.setFont(currencyFont);
+
+		// CREATE SUBMIT BUTTONS
+		goalsBtn = new JButton("SUBMIT");
+		goalsBtn.setFont(lblFont);
+
+		// CREATE GOALS PANEL
+		panel1 = new JPanel();
+		panel1.setBorder(new LineBorder(Color.WHITE, 5));
+		panel1.setLayout(new FlowLayout());
+		panel1.setBackground(Color.LIGHT_GRAY);
+		panel1.add(goalsLbl);
+		panel1.add(dollarSign1);
+		panel1.add(goalAmount);
+		panel1.add(categories1);
+		panel1.add(goalsBtn);
+
+		// ADD PANEL TO THE CONTAINER
+		container.add(panel1, BorderLayout.NORTH);
+	}
+
+	private void createExpenses() {
+		// CREATE LABEL AND TEXTFIELD TO INSERT EXPENSE
+		money = new JFormattedTextField(format);
+		money.setValue(new Double(0));
+		money.setFont(currencyFont2);
+		money.setHorizontalAlignment(SwingConstants.CENTER);
+		dollarSign = new JLabel("Amount:");
+		dollarSign1 = new JLabel("Amount:");
+		dollarSign.setFont(lblFont);
+		dollarSign.setHorizontalAlignment(SwingConstants.CENTER);
+		dollarSign1.setFont(lblFont);
+
+		// CREATE EXPENSES LABEL AND BLANK LABEL
+		expensesLbl = new JLabel("Enter Expenses:");
+		expensesLbl.setFont(amountFont);
+		blankLbl = new JLabel("");
+
+		// CREATE LABEL AND DROP DOWN FOR CATEGORY
+		categories = createCategories();
+		categories.setFont(lblFont);
+		categoryLbl = new JLabel("Category:");
+		categoryLbl.setFont(lblFont);
+		categoryLbl.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// CREATE LABEL AND TEXTFIELD FOR DESCRIPTION
+		descriptionTxt = new JTextField();
+		descriptionTxt.setEditable(true);
+		descriptionTxt.setFont(lblFont);
+		descriptionLbl = new JLabel("Description:");
+		descriptionLbl.setFont(lblFont);
+		descriptionLbl.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// CREATE SUBMIT BUTTON
+		expensesBtn = new JButton("SUBMIT");
+		expensesBtn.setFont(lblFont);
+
+		// CREATE EXPENSES PANEL
+		panel2 = new JPanel();
+		panel2.setBorder(new LineBorder(Color.WHITE, 5));
+		panel2.setLayout(new GridLayout(2, 1));
+		panel2.setBackground(Color.LIGHT_GRAY);
 	}
 
 	private void createMonthlySpendingGrid() {
@@ -280,8 +307,8 @@ public class View {
 		dec.setText("December\n");
 		dec.setBackground(Color.LIGHT_GRAY);
 		dec.setFont(lblFont);
-		
-		//CREATE ARRAYLIST OF JTEXTAREAS
+
+		// CREATE ARRAYLIST OF JTEXTAREAS
 		months = new ArrayList<JTextArea>();
 		months.add(jan);
 		months.add(feb);
@@ -295,7 +322,6 @@ public class View {
 		months.add(oct);
 		months.add(nov);
 		months.add(dec);
-		
 
 		// ADD TO PANEL
 		for (int i = 0; i < months.size(); i++) {
@@ -611,7 +637,7 @@ public class View {
 	public void setLabels(ArrayList<JLabel> labels) {
 		this.labels = labels;
 	}
-	
+
 	public ArrayList<JTextArea> getMonthTexts() {
 		return months;
 	}
