@@ -25,9 +25,7 @@ public class FinanceModel {
 	private double[] monthlySpending;
 	private File expensesFile;
 	private File goalsFile;
-	private boolean hasRan;
 	private String allGoals;
-	private Double total;
 
 	private static DecimalFormat df = new DecimalFormat("#.00");
 
@@ -36,15 +34,15 @@ public class FinanceModel {
 		expensesTxt = e;
 		goalsTxt = g;
 		path = p;
-		hasRan = false;
 		allGoals = "";
-		total = 0.0;
 		goalsList = new double[10];
 		originalGoalsList = new double[10];
 		monthlySpending = new double[12];
 	}
 
-	public void createFolder() {
+	public boolean createFolder() {
+		// CREATE BOOLEAN TO SEE IF THE APP HAS BEEN RAN BEFORE
+		boolean hasRan = false;
 		// CREATE DIRECTORY
 		File customDir = new File(path);
 		try {
@@ -56,75 +54,76 @@ public class FinanceModel {
 				// CREATE FILES IN THE FOLDER
 				expensesFile.createNewFile();
 				goalsFile.createNewFile();
-				hasRan = false;
+				// DISPLAY GOAL MARGINS OF 0
+				for (int i = 0; i < goalsList.length; i++) {
+					displayGoalMargins(i);
+				}
 			} else {
 				hasRan = true;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return hasRan;
 	}
 
 	public void displayStoredExpenses() {
 		Scanner scan = null;
-		if (hasRan == true) {
-			try {
-				scan = new Scanner(expensesFile);
-				while (scan.hasNext()) {
-					// GET THE STORED EXPENSE
-					String output = scan.nextLine();
-					// GET THE CATEGORY
-					String category = getCategoryForExpense(output);
-					// GET THE MONTH
-					int date = getMonth(output);
-					addMonthExpense(output, date);
+		try {
+			scan = new Scanner(expensesFile);
+			while (scan.hasNext()) {
+				// GET THE STORED EXPENSE
+				String output = scan.nextLine();
 
-					// calculateMargins(month);
-					// GET THE INDEX THE EXPENSE BELONGS TO
-					getIndexForExpense(category, output);
-					displayExpenses(output);
-				}
-				displayMonthlyMargins();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (scan != null) {
-					scan.close();
-				}
+				// GET THE CATEGORY
+				String category = getCategoryForExpense(output);
+
+				// GET THE MONTH
+				int date = getMonth(output);
+				addMonthExpense(output, date);
+
+				// GET THE INDEX THE EXPENSE BELONGS TO
+				getIndexForExpense(category, output);
+				displayExpenses(output);
+			}
+			// DISPLAY MARGINS
+			displayMonthlyMargins();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (scan != null) {
+				scan.close();
 			}
 		}
 	}
 
 	public void displayStoredGoals() {
 		Scanner scan = null;
-		if (hasRan == true) {
-			try {
-				scan = new Scanner(goalsFile);
-				while (scan.hasNext()) {
-					// GET THE STORED GOAL
-					String output = scan.nextLine();
+		try {
+			scan = new Scanner(goalsFile);
+			while (scan.hasNext()) {
+				// GET THE STORED GOAL
+				String output = scan.nextLine();
 
-					// FIND WHAT INDEX IT BELONGS TO
-					String category = getCategory(output);
-					int index = getIndex(category, output, true);
-					// DISPLAY MARGINS
-					displayGoalMargins(index);
+				// FIND WHAT INDEX IT BELONGS TO
+				String category = getCategory(output);
+				int index = getIndex(category, output, true);
 
-					// ADD TO STRING OF GOALS
-					allGoals += output + "\n";
-					// DISPLAY THE GOAL
-					displayGoals(output);
-					// ADD TO THE TOTAL
-					total += totalGoals(output);
-				}
-				// displayResults("Total Goals Budget: $" + df.format(total));
+				// DISPLAY MARGINS
+				displayGoalMargins(index);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (scan != null) {
-					scan.close();
-				}
+				// ADD TO STRING OF GOALS
+				allGoals += output + "\n";
+
+				// DISPLAY THE GOAL
+				displayGoals(output);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (scan != null) {
+				scan.close();
 			}
 		}
 	}
@@ -158,7 +157,6 @@ public class FinanceModel {
 			getIndexForExpense(category.toLowerCase(), input);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
 			e.printStackTrace();
 		} finally {
 			if (writer != null) {
@@ -173,25 +171,29 @@ public class FinanceModel {
 			// CREATE FILEWRITER
 			writer = new PrintWriter(new FileWriter(goalsTxt, true));
 			// STORE INPUT IN A STRING
+			// used for display
 			String category = view.getCategories1().getItemAt(view.getCategories1().getSelectedIndex());
+			// used to get index
+			String lowerCaseCat = category.trim().toLowerCase();
 			String amount = view.getGoalAmount().getText();
 			String input = category + "\t" + amount;
 			// CHECK IF THERE IS ALREADY A GOAL FOR THIS CATEGORY STORED
 			if (allGoals.contains(category)) {
 				updateGoals(input, category);
 			} else {
+				int index = getIndex(lowerCaseCat, input, false);
 				// WRITE NEW GOAL TO THE TEXT FILE
 				writer.println(input);
-				// ADD TO THE TOTAL
-				total += Double.parseDouble(amount);
 				// ADD NEW GOAL TO allGoals
 				allGoals += input + "\n";
 				// ADD INPUT TO THE SCROLL PANE
 				displayGoals(input);
-				// displayResults("Total Goals Budget: $" + df.format(total));
+				// UPDATE THE MARGINS
+				updateGoalMargins(lowerCaseCat, index, input);
+				// DISPLAY GOAL MARGINS
+				displayGoalMargins(index);
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
 			e.printStackTrace();
 		} finally {
 			if (writer != null) {
@@ -207,7 +209,6 @@ public class FinanceModel {
 		// ARRAYLIST TO HOLD THE OLD CONTENT OF THE GOALS FILE
 		ArrayList<String> content = new ArrayList<String>();
 		// RESET THE TOTAL
-		total = 0.0;
 		try {
 			br = new BufferedReader(new FileReader(goalsFile));
 			// CREATE STRING TO HOLD CURRENT LINE
@@ -224,12 +225,10 @@ public class FinanceModel {
 					updateGoalMargins(cat, index, input);
 					// UPDATE MARGINS
 					displayGoalMargins(index);
-					total += totalGoals(input);
 				}
 				// WRITE THE REMAINING LINES
 				else {
 					content.add(line);
-					total += totalGoals(line);
 
 				}
 			}
@@ -243,13 +242,10 @@ public class FinanceModel {
 				writer.println(content.get(i));
 				displayGoals(content.get(i));
 			}
-			// WRITE THE TOTAL GOALS TO THE END OF THE TEXT FILE
-			// displayResults("Total Goals Budget: $" + df.format(total));
 			// CLOSE WRITER AND READER
 			writer.close();
 			br.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

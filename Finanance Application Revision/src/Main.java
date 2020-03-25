@@ -2,9 +2,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class Controller {
+public class Main {
 
 	public static void main(String[] args) {
 		buildFinanceViews();
@@ -17,24 +16,21 @@ public class Controller {
 
 		// CREATE THE STRINGS FOR THE FILE PATHS TO BE PASSED TO THE FINANCE
 		// MODEL
-		String path = System.getProperty("user.home") + "\\.finance_app";
-		String goalsTxt = path + "\\goals.txt";
-		String expensesTxt = path + "\\expenses.txt";
-		
-		//CREATE GOALS CLASS
-		Goals goals = new Goals("");
+		String path = System.getProperty("user.home") + File.separator + ".finance_app";
+		String goalsTxt = path + File.separator + "goals.txt";
+		String expensesTxt = path + File.separator + "expenses.txt";
 
 		// CREATE THE FINANCE MODEL
-		FinanceModel model = new FinanceModel(view,expensesTxt, goalsTxt, path);
-		
+		FinanceModel model = new FinanceModel(view, expensesTxt, goalsTxt, path);
 
 		// CREATE FOLDER IF FIRST LOAD UP
-		model.createFolder();
-		
-		//DISPLAY STORED EXPENSES AND GOALS
-		model.displayStoredGoals();
-		model.displayStoredExpenses();
-		//model.displayMargins();
+		boolean hasRan = model.createFolder();
+
+		// DISPLAY STORED EXPENSES AND GOALS IF APP HAS RAN BEFORE
+		if (hasRan == true) {
+			model.displayStoredGoals();
+			model.displayStoredExpenses();
+		}
 
 		// CREATE ACTION LISTENER TO SUBMIT EXPENSES
 		view.getExpensesBtn().addActionListener(new ActionListener() {
@@ -49,9 +45,9 @@ public class Controller {
 			}
 
 		});
-		
-		//CREATE ACTION LISTENER TO SUBMIT GOALS
-		view.getGoalsBtn().addActionListener(new ActionListener(){
+
+		// CREATE ACTION LISTENER TO SUBMIT GOALS
+		view.getGoalsBtn().addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
 				// WRITE TO THE GOALS.TXT
@@ -61,7 +57,7 @@ public class Controller {
 					e1.printStackTrace();
 				}
 			}
-			
+
 		});
 	}
 
