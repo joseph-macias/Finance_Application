@@ -124,8 +124,8 @@ public class View {
 
 		// CREATE EXPENSES SCROLLABLE
 		createExpensesScrollable();
-		
-		//CREATE MENU BAR
+
+		// CREATE MENU BAR
 		createMenuBar();
 	}
 
@@ -431,30 +431,30 @@ public class View {
 		// SET BORDER
 		panel4.setBorder(new LineBorder(Color.GRAY, 3));
 	}
-	
-	private void createMenuBar(){
-		//CREATE MENU BAR
+
+	private void createMenuBar() {
+		// CREATE MENU BAR
 		menuBar = new JMenuBar();
 		menu = new JMenu("Settings");
-		
-		//CREATE MENU ITEMS FOR THE COLORS
+
+		// CREATE MENU ITEMS FOR THE COLORS
 		blue = new JMenuItem("Blue");
 		red = new JMenuItem("Red");
 		green = new JMenuItem("Green");
 		yellow = new JMenuItem("Yellow");
 		black = new JMenuItem("Black");
-		
-		//ADD MENU ITEMS TO MENU
-		menu.add(blue);		
+
+		// ADD MENU ITEMS TO MENU
+		menu.add(blue);
 		menu.add(red);
 		menu.add(green);
 		menu.add(yellow);
 		menu.add(black);
-		
-		//ADD MENU TO MENU BAR
+
+		// ADD MENU TO MENU BAR
 		menuBar.add(menu);
-		
-		//ADD TO THE FRAME
+
+		// ADD TO THE FRAME
 		window.setJMenuBar(menuBar);
 	}
 
@@ -494,30 +494,6 @@ public class View {
 
 	}
 
-	public JPanel getPanel1() {
-		return panel1;
-	}
-
-	public void setPanel1(JPanel panel1) {
-		this.panel1 = panel1;
-	}
-
-	public JPanel getPanel2() {
-		return panel2;
-	}
-
-	public void setPanel2(JPanel panel2) {
-		this.panel2 = panel2;
-	}
-
-	public JPanel getPanel3() {
-		return panel3;
-	}
-
-	public void setPanel3(JPanel panel3) {
-		this.panel3 = panel3;
-	}
-
 	public JFrame getWindow() {
 		return window;
 	}
@@ -534,30 +510,6 @@ public class View {
 		this.money = money;
 	}
 
-	public JLabel getDollarSign() {
-		return dollarSign;
-	}
-
-	public void setDollarSign(JLabel dollarSign) {
-		this.dollarSign = dollarSign;
-	}
-
-	public JLabel getDollarSign1() {
-		return dollarSign1;
-	}
-
-	public void setDollarSign1(JLabel dollarSign1) {
-		this.dollarSign1 = dollarSign1;
-	}
-
-	public JLabel getCategoryLbl() {
-		return categoryLbl;
-	}
-
-	public void setCategoryLbl(JLabel categoryLbl) {
-		this.categoryLbl = categoryLbl;
-	}
-
 	public JComboBox<String> getCategories() {
 		return categories;
 	}
@@ -572,14 +524,6 @@ public class View {
 
 	public void setCategories1(JComboBox<String> categories1) {
 		this.categories1 = categories1;
-	}
-
-	public JLabel getDescriptionLbl() {
-		return descriptionLbl;
-	}
-
-	public void setDescriptionLbl(JLabel descriptionLbl) {
-		this.descriptionLbl = descriptionLbl;
 	}
 
 	public JTextField getDescriptionTxt() {
@@ -620,18 +564,6 @@ public class View {
 
 	public void setExpensesBtn(JButton expensesBtn) {
 		this.expensesBtn = expensesBtn;
-	}
-
-	public JLabel getGoalsLbl() {
-		return goalsLbl;
-	}
-
-	public void setGoalsLbl(JLabel goalsLbl) {
-		this.goalsLbl = goalsLbl;
-	}
-
-	public JScrollPane getScrollPane() {
-		return scrollPane;
 	}
 
 	public void setScrollPane(JScrollPane scrollPane) {
@@ -721,6 +653,5 @@ public class View {
 	public void setBlack(JMenuItem black) {
 		this.black = black;
 	}
-	
 
 }
