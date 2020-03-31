@@ -20,19 +20,22 @@ public class FinanceModel {
 	private String path;
 	private String expensesTxt;
 	private String goalsTxt;
+	private String colorTxt;
 	private double[] goalsList;
 	private double[] originalGoalsList;
 	private double[] monthlySpending;
 	private File expensesFile;
 	private File goalsFile;
+	private File colorFile;
 	private String allGoals;
 
 	private static DecimalFormat df = new DecimalFormat("#.00");
 
-	public FinanceModel(View v, String e, String g, String p) {
+	public FinanceModel(View v, String e, String g, String c, String p) {
 		view = v;
 		expensesTxt = e;
 		goalsTxt = g;
+		colorTxt = c;
 		path = p;
 		allGoals = "";
 		goalsList = new double[10];
@@ -49,11 +52,13 @@ public class FinanceModel {
 			// CREATE FILES
 			expensesFile = new File(expensesTxt);
 			goalsFile = new File(goalsTxt);
+			colorFile = new File(colorTxt);
 			// CREATE FOLDER IF IT DOES NOT ALREADY EXIST
 			if (customDir.mkdirs()) {
 				// CREATE FILES IN THE FOLDER
 				expensesFile.createNewFile();
 				goalsFile.createNewFile();
+				colorFile.createNewFile();
 				// DISPLAY GOAL MARGINS OF 0
 				for (int i = 0; i < goalsList.length; i++) {
 					displayGoalMargins(i);

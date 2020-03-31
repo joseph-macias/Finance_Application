@@ -124,8 +124,8 @@ public class View {
 
 		// CREATE EXPENSES SCROLLABLE
 		createExpensesScrollable();
-
-		// CREATE MENU BAR
+		
+		//CREATE MENU BAR
 		createMenuBar();
 	}
 
@@ -431,38 +431,36 @@ public class View {
 		// SET BORDER
 		panel4.setBorder(new LineBorder(Color.GRAY, 3));
 	}
-
-	private void createMenuBar() {
-		// CREATE MENU BAR
+	
+	private void createMenuBar(){
+		//CREATE MENU BAR
 		menuBar = new JMenuBar();
 		menu = new JMenu("Settings");
-
-		// CREATE MENU ITEMS FOR THE COLORS
+		
+		//CREATE MENU ITEMS FOR THE COLORS
 		blue = new JMenuItem("Blue");
 		red = new JMenuItem("Red");
 		green = new JMenuItem("Green");
 		yellow = new JMenuItem("Yellow");
 		black = new JMenuItem("Black");
-
-		// ADD MENU ITEMS TO MENU
-		menu.add(blue);
+		
+		//ADD MENU ITEMS TO MENU
+		menu.add(blue);		
 		menu.add(red);
 		menu.add(green);
 		menu.add(yellow);
 		menu.add(black);
-
-		// ADD MENU TO MENU BAR
+		
+		//ADD MENU TO MENU BAR
 		menuBar.add(menu);
-
-		// ADD TO THE FRAME
+		
+		//ADD TO THE FRAME
 		window.setJMenuBar(menuBar);
 	}
 
 	private void createContainer() {
 		container = window.getContentPane();
 		container.setLayout(new BorderLayout(8, 6));
-		container.setBackground(Color.blue);
-		window.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.BLUE));
 	}
 
 	private void createWindow() {
@@ -652,6 +650,4 @@ public class View {
 
 	public void setBlack(JMenuItem black) {
 		this.black = black;
-	}
-
-}
+	}}
