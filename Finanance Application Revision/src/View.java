@@ -82,6 +82,10 @@ public class View {
 	private JTextArea nov;
 	private JTextArea dec;
 	private ArrayList<JTextArea> months;
+	// MENU BUTTON
+	private JMenuBar menuBar;
+	private JMenu menu;
+	private JMenuItem blue, red, green, yellow, black;
 
 	public View() {
 		// CREATE THE WINDOW
@@ -120,14 +124,19 @@ public class View {
 
 		// CREATE EXPENSES SCROLLABLE
 		createExpensesScrollable();
+		
+		//CREATE MENU BAR
+		createMenuBar();
 	}
 
 	private void createExpensesScrollable() {
 		// CREATE SCROLL PANE AND TEXT AREA TO DISPLAY EXPENSES
 		scrollPaneText = new JTextArea();
 		scrollPaneText.setEditable(false);
-		scrollPaneText.setText("Expenses:\n");
+		String title = "Amount\tCategory\tDescription\tDate\n";
+		scrollPaneText.setText(title);
 		scrollPaneText.setFont(lblFont);
+		scrollPaneText.setTabSize(20);
 		scrollPane = new JScrollPane(scrollPaneText);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
@@ -168,6 +177,7 @@ public class View {
 		goalsScrollText.setEditable(false);
 		goalsScrollText.setText("Goals:\n");
 		goalsScrollText.setFont(lblFont);
+		goalsScrollText.setTabSize(15);
 		goalsScrollPane = new JScrollPane(goalsScrollText);
 		goalsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		goalsScrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
@@ -421,6 +431,32 @@ public class View {
 		// SET BORDER
 		panel4.setBorder(new LineBorder(Color.GRAY, 3));
 	}
+	
+	private void createMenuBar(){
+		//CREATE MENU BAR
+		menuBar = new JMenuBar();
+		menu = new JMenu("Settings");
+		
+		//CREATE MENU ITEMS FOR THE COLORS
+		blue = new JMenuItem("Blue");
+		red = new JMenuItem("Red");
+		green = new JMenuItem("Green");
+		yellow = new JMenuItem("Yellow");
+		black = new JMenuItem("Black");
+		
+		//ADD MENU ITEMS TO MENU
+		menu.add(blue);		
+		menu.add(red);
+		menu.add(green);
+		menu.add(yellow);
+		menu.add(black);
+		
+		//ADD MENU TO MENU BAR
+		menuBar.add(menu);
+		
+		//ADD TO THE FRAME
+		window.setJMenuBar(menuBar);
+	}
 
 	private void createContainer() {
 		container = window.getContentPane();
@@ -645,5 +681,46 @@ public class View {
 	public void setMonths(ArrayList<JTextArea> months) {
 		this.months = months;
 	}
+
+	public JMenuItem getBlue() {
+		return blue;
+	}
+
+	public void setBlue(JMenuItem blue) {
+		this.blue = blue;
+	}
+
+	public JMenuItem getRed() {
+		return red;
+	}
+
+	public void setRed(JMenuItem red) {
+		this.red = red;
+	}
+
+	public JMenuItem getGreen() {
+		return green;
+	}
+
+	public void setGreen(JMenuItem green) {
+		this.green = green;
+	}
+
+	public JMenuItem getYellow() {
+		return yellow;
+	}
+
+	public void setYellow(JMenuItem yellow) {
+		this.yellow = yellow;
+	}
+
+	public JMenuItem getBlack() {
+		return black;
+	}
+
+	public void setBlack(JMenuItem black) {
+		this.black = black;
+	}
+	
 
 }

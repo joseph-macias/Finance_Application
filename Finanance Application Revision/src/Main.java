@@ -1,7 +1,4 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 public class Main {
 
@@ -32,33 +29,15 @@ public class Main {
 			model.displayStoredExpenses();
 		}
 
-		// CREATE ACTION LISTENER TO SUBMIT EXPENSES
-		view.getExpensesBtn().addActionListener(new ActionListener() {
+		// CREATE ACTIONLISTERS
+		ActionListeners listeners = new ActionListeners(view.getBlue(), view.getBlack(), view.getRed(), view.getGreen(),
+				view.getYellow(), view, model);
+		
+		// CALL COLOR LISTENERS METHOD
+		listeners.colorListeners();
 
-			public void actionPerformed(ActionEvent e) {
-				// WRITE TO THE EXPENSES.TXT
-				try {
-					model.storeExpenses();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-
-		});
-
-		// CREATE ACTION LISTENER TO SUBMIT GOALS
-		view.getGoalsBtn().addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				// WRITE TO THE GOALS.TXT
-				try {
-					model.storeGoals();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-
-		});
+		// CALL SUBMIT LISTENERS METHOD
+		listeners.submitListeners();
 	}
 
 }
