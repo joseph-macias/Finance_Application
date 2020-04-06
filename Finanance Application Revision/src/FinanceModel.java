@@ -142,8 +142,9 @@ public class FinanceModel {
 			String expense = view.getMoney().getText();
 			String category = view.getCategories().getItemAt(view.getCategories().getSelectedIndex());
 			String description = view.getDescriptionTxt().getText();
+			
+			//STORE INPUT
 			String input = expense + "\t" + category + "\t" + description;
-
 			// GET CURRENT DATE AND ADD IT TO INPUT
 			input += "\t" + getCurrentDate();
 			// ADD INPUT TO EXPENSES TEXT FILE
